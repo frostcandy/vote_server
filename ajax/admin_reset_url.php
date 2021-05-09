@@ -7,12 +7,11 @@
     Reset URL for users connection device. PUSH notifications
     This may be a future feature, currently not used.
 
+    We do use the -1 action to update the CSRF Token.
+
 
     Secure Trustworthy Online Voting for All
 *************************************************************************/
-    return false; // We don't use this for now. 
-
-
     $t = time(); $e = '';$n = '';$f = '';$o='';
 
 	require_once('../tools.php');
@@ -25,6 +24,9 @@
         echo '{"csrf":"'.$csrf.'","e":"-1","n":"'.$n.'","f":"'.$f.'"}';
         return true;
     }
+
+    // For now, there is no reason to go beyond this point.
+    return false;
 
 
 	if( $tool->admin['allow_login'] !== 1  ||  $tool->admin['test_mode'] !== 1 || $tool->admin['vote_complete'] !==0 ){ $e = 'login_not_allowed'; }
