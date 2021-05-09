@@ -5,7 +5,7 @@ YOU ARE VIEWING THE VOTE SERVER README FILE
 
 Version: 0.9 - While this software has been tested to be working properly it should be considered a first order template until I get more people testing.
 
-#CONTEXT:
+# CONTEXT:
   - VOTE SERVER         : the server that hosts the vote for voters to place their vote.
   - MODERATOR SERVER    : The backend server moderators and watchers use to moderate and view vote actions
   - VOTERS              : this is the person who places the vote from their phone or comptuer
@@ -15,25 +15,24 @@ Version: 0.9 - While this software has been tested to be working properly it sho
   - WATCHER             : this person can watch the live vote happen, but can not affect it. 
   - ADMINISTRATOR       : this person sets up the vote meta data like ballot options and descriptions.
 
-#LINKS:
+# LINKS:
   - VOTE SERVER CODE        : [ https://github.com/frostcandy/vote_server ]
   - MODERATOR SERVER CODE   : [ https://github.com/frostcandy/vote_moderator_server ]
   - DEMO                    : [ https://vote.FrostCandy.com ]
   - VOTE SERVER Video       : [youtube video instruction]
   - MODERATOR SERVER Video  : [youtube video instruction]
 
-#CONTACT:
+# CONTACT:
   - Email                   : help (AT) frostcandy.com
   - Discord                 : https://discord.gg/JrqWW6uqGg   ( Use channel software # vote )
 
-#SUPPORT/DONATION:
+# SUPPORT/DONATION:
   - My vote software will always be completely free to download and use. Your financial support will buy me more time to work on this project and other tools. I haven't set up any practical way to accept your support, so for now if you wish to make a donation you can use the donate button on my passbank software
   https://passbank.frostcandy.com/
   - Or just paypal your freind Frost some cash at the email address:  pay (AT) frostcandy.com 
 
 
-
-#ABOUT:
+# ABOUT:
   - The FrostCandy vote software is meant to secure the integrity of contentious voting while allowing all legitimate voters (VOTER) with access to a phone or computer with a camera to place their vote remotely. That vote will then be verified by a member of each interested party (MODERATOR).
 
   Each moderator will have the ability to ACCEPT, DENY, or BLOCK IP of the voter. A member from each interested party must accept a voter before their ballot will be processed. 
@@ -50,7 +49,7 @@ Version: 0.9 - While this software has been tested to be working properly it sho
 
   After a live vote ends, the software should lock out all actions. In order to reset for another vote a software technician would have to manually modify the database on the vote server. 
 
-#GOALS: 
+# GOALS: 
   - Simple online voteing 
   - Modern security features 
   - No cookies 
@@ -63,7 +62,7 @@ Version: 0.9 - While this software has been tested to be working properly it sho
   - Multi-Party verifiablity
 
 
-#VOTE SERVER FILE STRUCTURE:  
+# VOTE SERVER FILE STRUCTURE:  
   /tmp                   - The general temporary unix directory where initial secure files are created  
   /vote                  - The storage location of the secure vote passcodes and database credentials.  
   ajax/  
@@ -92,14 +91,14 @@ Version: 0.9 - While this software has been tested to be working properly it sho
   vote.js                - 90% of the website user expereince, forms, langauge, css, html, javascript.  
   vote.sql               - The vote MySQL generation dump file.  
   
-#DATABASE STRUCTURE:  
-vote  
-|__ admin             (Administration Table)  
+# DATABASE STRUCTURE:  
++vote  
++__ admin             (Administration Table)  
    |__ allow_login      - Def: 1, 1 = allow, 0 = do not allow  
    |__ test_mode        - Def: 1, 1 = test mode, 2 = live mode  
    |__ vote_complete    - Def: 0, 1 = vote has ended  
    |__ vote_close_uid   - Def: null, Holds array of parties ending the vote.  
-|__ users             (Users Table)  
++__ users             (Users Table)  
    |__ ukey             - users key  
    |__ c                - creation timestamp  
    |__ l                - last login timestamp  
@@ -115,25 +114,25 @@ vote
    |__ apikey           - API Key to check incoming data is known user  
    |__ watchurl         - future feature for push notifiacitons  
    |__ party            - Users party  
-|__ users_create_hold (Temporary Users Waiting for Approval)  
++__ users_create_hold (Temporary Users Waiting for Approval)  
    |__ h_key            - temporary users key  
    |__ c                - creation date  
    |__ h_user_data      - Temporary Users data  
-|__ voter_ip_list     (List of voting IPs)  
++__ voter_ip_list     (List of voting IPs)  
    |__ ip_id            - The IP Address  
    |__ ip_used          - How many times the IP was used in a vote  
    |__ ip_valid         - Def: 1, 1 valid IP, 0 invalid IP  
-|__ vote_choice       (Approved Selected Ballot Options)  
++__ vote_choice       (Approved Selected Ballot Options)  
    |__ vc_vid           - Ballot ID (unique 7 section code user recieves when they vote)  
    |__ vc_choice        - Ballot Selections placed by the voter  
-|__ vote_choice_queue (Randomness for vote_choice to separate votes from voters)  
++__ vote_choice_queue (Randomness for vote_choice to separate votes from voters)  
    |__ vc_vid           - Ballot ID (unique 7 section code user recieves when they vote)  
    |__ vc_choice        - Ballot Selections placed by the voter  
-|__ vote_csrf_tokens  (User token to show user is active and logged in)  
++__ vote_csrf_tokens  (User token to show user is active and logged in)  
    |__ vcsrf_id         - Token Key  
    |__ vcsrf_c          - Timestamp  
    |__ vcsrf_uid        - User ID  
-|__ vote_meta         (Table that holds the ballot options, descriptions, and settings information)  
++__ vote_meta         (Table that holds the ballot options, descriptions, and settings information)  
    |__ v_key            - vote meta key  
    |__ l                - Last modified timestamp  
    |__ v_uid            - Last user who made an edit to the table  
@@ -166,9 +165,9 @@ vote
    |__ v_show_phone     - Send phone name to moderators and watchers  
    |__ v_open_vote      - Def: 1, future feature  
    |__ v_running_total  - Def: 0, future feature to show a running total  
-|__ vote_party        (List of involved parties heads/tails/Republican/Democrat/... )  
++__ vote_party        (List of involved parties heads/tails/Republican/Democrat/... )  
    |__ party_key        - The interested voting party.  
-|__ vote_user_approve (Voters are stored in this table, until approved ballot is tied to voter)  
++__ vote_user_approve (Voters are stored in this table, until approved ballot is tied to voter)  
    |__ vua_key          - Voter Key  
    |__ c                - creation timestamp  
    |__ l                - last touched timestamp  
