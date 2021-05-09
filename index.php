@@ -21,7 +21,7 @@
   $ballot       = '{}';
   $ballot_meta  = '{}';
   $rs           = $tool->q('SELECT * FROM `vote_meta` WHERE `v_key` = 1;', [], '');
-  if($rs){
+  if($rs && $rs->num_rows > 0){
       $r           = $rs->fetch_object();
       $ballot      = $r->v_ballot;
       $ballot_meta = '{"co":"' . $r->v_ck_country    . '",'
