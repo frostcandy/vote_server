@@ -12,12 +12,6 @@ db_pass = ""
 db_host = ""
 db_name = ""
 
-[encryption_credentials]
-; You set these to build the secure file sent to /tmp directory, then move to your secure /vote dir. After, set to empty so no one can see your credentials
-sec_key    = ""
-sec_nonce  = ""
-
-
 [maximums]
 ; 1000000 = 1MB, default 50k
 image_max_size              = 50000 

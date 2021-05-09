@@ -32,7 +32,6 @@ class tools{
 	private $db_name      = 'name';      // Default db name 
 
 	private $sec_key      = null;        // secure encryption key
-	private $sec_nonce    = null;        // secure encryption nonce
 
     private $seconds_csrf_non_user_valid = 1200;   // Seconds a non-user CSRF token will be valid
     private $seconds_csrf_user_valid     = 1200;   // Seconds a user CSRF token will be valid
@@ -57,12 +56,8 @@ class tools{
         $this->config["db_host"] = '';
         $this->config["db_name"] = '';
 
-        $this->sec_key   = ($this->config["sec_key"]   !="") ? $this->config["sec_key"]   :$this->sec_key;
-        $this->sec_nonce = ($this->config["sec_nonce"] !="") ? $this->config["sec_nonce"] :$this->sec_nonce;
         $this->seconds_csrf_non_user_valid = ($this->config["seconds_csrf_non_user_valid"] !="") ? $this->config["seconds_csrf_non_user_valid"] : $this->seconds_csrf_non_user_valid;
         $this->seconds_csrf_user_valid     = ($this->config["seconds_csrf_user_valid"]     !="") ? $this->config["seconds_csrf_user_valid"]     : $this->seconds_csrf_user_valid;
-        $this->config["sec_key"]                     = '';
-        $this->config["sec_nonce"]                   = '';
         $this->config["seconds_csrf_non_user_valid"] = '';
         $this->config["seconds_csrf_user_valid"]     = '';
 
@@ -72,11 +67,10 @@ class tools{
 			// Gather Secure Credentials
 			$secparts = explode("|", fgets($fp));
 			$this->sec_key   = base64_decode($secparts[0]);
-			$this->sec_nonce = base64_decode($secparts[1]);
-			$this->db_user   = $this->iDecrypt(base64_decode($secparts[2]));
-			$this->db_pass   = $this->iDecrypt(base64_decode($secparts[3]));
-			$this->db_host   = $this->iDecrypt(base64_decode($secparts[4]));
-			$this->db_name   = $this->iDecrypt(base64_decode($secparts[5]));
+			$this->db_user   = $this->iDecrypt(base64_decode($secparts[1]));
+			$this->db_pass   = $this->iDecrypt(base64_decode($secparts[2]));
+			$this->db_host   = $this->iDecrypt(base64_decode($secparts[3]));
+			$this->db_name   = $this->iDecrypt(base64_decode($secparts[4]));
 			fclose($fp);
 
 			// Create the database connection.
@@ -99,13 +93,10 @@ class tools{
 			$rq->close();
 		} else {
 			// Generate SODIUM KEY 
-			$this->sec_key   = random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES); // 256 bit
-			// Generate SODIUM NONCE
-			$this->sec_nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES); // 24 bytes
+			$this->sec_key   = random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES); // 256 bit - 32 bytes / 32 characters
 			// Write security file with DB Credentials
 			$fp              = fopen("/tmp/sec.inf", "w") or die("Unable to open security file for creation!");
 			fwrite($fp, base64_encode( $this->sec_key ) . 
-				'|' . base64_encode( $this->sec_nonce ) . 
 				'|' . base64_encode($this->iEncrypt( $this->db_user )) . 
 				'|' . base64_encode($this->iEncrypt( $this->db_pass )) . 
 				'|' . base64_encode($this->iEncrypt( $this->db_host )) . 
@@ -118,8 +109,15 @@ class tools{
 
     //-------------------------------------------------------------------------------------------
     // Standard encryption for database data
-    public function iEncrypt($msg){ return sodium_crypto_secretbox($msg, $this->sec_nonce, $this->sec_key); }
-    public function iDecrypt($msg){ return sodium_crypto_secretbox_open($msg, $this->sec_nonce, $this->sec_key); }
+    public function iEncrypt($msg){
+    	$nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES); // 24 bytes - $this->sec_key 32 bytes
+    	return $nonce . sodium_crypto_secretbox($msg, $nonce, $this->sec_key);
+    }
+    public function iDecrypt($msg){
+    	$nonce = mb_substr($msg, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
+    	$m1    = mb_substr($msg, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
+    	return sodium_crypto_secretbox_open($m1, $nonce, $this->sec_key);
+    }
 
     //-------------------------------------------------------------------------------------------
     // Reporting encryption when sending receipts to make it hard to inject fake data to recipient. 

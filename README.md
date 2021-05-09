@@ -193,10 +193,6 @@ db_pass = ""      : Enter the vote server database password
 db_host = ""      : Enter the vote server database host  
 db_name = ""      : Enter the vote server database name  
 
-The super secret encryption information, remove them after yoru first run of the software.  
-sec_key    = ""  
-sec_nonce  = ""  
-  
 This should be left at 50000. That should be more than enough.  
 image_max_size              = 50000   
 
