@@ -1,6 +1,8 @@
 # Ignore anything in the config folder
-config/*
+
+config/
 
 # Ignore anything in the ballots folder
-ballots/*
+
+ballots/
 
