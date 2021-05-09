@@ -237,6 +237,8 @@ unlimited_ip_array    = ["192.168.1.2","192.168.1.3","192.168.1.4"]
     --> sudo apt install net-tools  
   - Install PHP  ( My Version: 7.4.3 )  
     --> sudo apt install php-fpm php-mysql  
+  - Install PHP-MBSTRING
+    --> sudo apt install php-mbstring
   - Install Certbot ( To provide trusted certificate in browsers )  
     --> sudo apt install certbot python3-certbot-nginx  
     --> sudo certbot --nginx -d example.com -d www.example.com  
@@ -335,7 +337,18 @@ server {
   - Create the vote server database  
     --> sudo mysql -u USERNAME -p  
     --> mysql> CREATE DATABASE vote;  
-    --> exit  
+    # Create a user that is not root with a strong password.
+    --> mysql> CREATE USER 'frost'@'localhost' IDENTIFIED BY 'password';
+    --> mysql> GRANT ALL PRIVILEGES ON *.* TO 'frost'@'localhost';
+    --> mysql> FLUSH PRIVILEGES;
+    --> exit;
+    # Want to remove the root access? Why not. 
+    --> mysql -u frost -p  
+    --> mysql> SELECT host, user, plugin FROM mysql.user;  
+    # root should show someting like auth_socket for it's plugin  
+    --> mysql> UPDATE mysql.user SET plugin = '' WHERE user = 'root' AND host = 'localhost';  
+    --> mysql> FLUSH PRIVILEGES;  
+    --> exit;  
   - Import the SQL data file. 
     --> mysql -u USERNAME -p vote < /var/www/html/vote/vote.sql  
 
@@ -344,8 +357,8 @@ server {
   - cp config.ini.tmp config.ini  
   - nano config.ini  
   # You do need to set your DB Credentials
-  --> db_user = "YOUR DB USER NAME"  
-  --> db_pass = "YOUR DB PASSWORD"  
+  --> db_user = "YOUR DB USER NAME (frost)"  
+  --> db_pass = "YOUR DB PASSWORD (password)"  
   --> db_host = "localhost"  
   --> db_name = "vote"  
 
@@ -384,7 +397,11 @@ server {
   # Save the file CNTRL-O  
   # Exit the file CNTRL-X  
 
-  - You are done, go back to https://vote.MySite.com and set up the ballot meta data and users.
+  - You are done, go back to https://vote.MySite.com and set up the ballot meta data and users
+  # If you get an error connecting to your database and need to reset your credentials
+  # sudo rm /vote/sec.inf 
+  # Once that file is removed, reset your config db credentials, and repeat the process for building that file. 
+
 
 
 
