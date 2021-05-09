@@ -182,41 +182,41 @@ Version: 0.9 - While this software has been tested to be working properly it sho
 
 
 # CONFIG SETUP
--- copy the file config/config.ini.tmp to config/config.ini
--- The software will use the config.ini file for configuration.
+-- copy the file config/config.ini.tmp to config/config.ini  
+-- The software will use the config.ini file for configuration.  
 
-debugmode = 1     : default 0, you don't need to change this
+debugmode = 1     : default 0, you don't need to change this  
 
-The database credentials can be removed after your first deployment
-db_user = ""      : Enter the vote server database user name
-db_pass = ""      : Enter the vote server database password
-db_host = ""      : Enter the vote server database host
-db_name = ""      : Enter the vote server database name
+The database credentials can be removed after your first deployment  
+db_user = ""      : Enter the vote server database user name  
+db_pass = ""      : Enter the vote server database password  
+db_host = ""      : Enter the vote server database host  
+db_name = ""      : Enter the vote server database name  
 
-The super secret encryption information, remove them after yoru first run of the software.
-sec_key    = ""
-sec_nonce  = ""
+The super secret encryption information, remove them after yoru first run of the software.  
+sec_key    = ""  
+sec_nonce  = ""  
+  
+This should be left at 50000. That should be more than enough.  
+image_max_size              = 50000   
 
-This should be left at 50000. That should be more than enough.
-image_max_size              = 50000 
+Limit number of people allowed to use the same IP when voting.   
+ip_max_usage                = 10   
 
-Limit number of people allowed to use the same IP when voting. 
-ip_max_usage                = 10
-
-If this is not set long enough then people placing votes will get a timeout error.
-seconds_csrf_non_user_valid = 1200
-
-This is for the administrators. After this many seconds you will get a timeout error.
-seconds_csrf_user_valid     = 1200
-
-Viewing URL for everyone to see the current vote software code 
-vote_view_url        = "https://MyPrecinct.com/votelook1/"
-
-Viewing URL for everyone to see the current NGINX setup
-nginx_view_url        = "https://MyPrecinct.com/votelook2/"
-
-List of Unlimited IP - Example, you want walk-ins to vote at your precienct off an ipad or workstation. Example:
-unlimited_ip_array    = ["192.168.1.2","192.168.1.3","192.168.1.4"]
+If this is not set long enough then people placing votes will get a timeout error.  
+seconds_csrf_non_user_valid = 1200  
+  
+This is for the administrators. After this many seconds you will get a timeout error.  
+seconds_csrf_user_valid     = 1200  
+  
+Viewing URL for everyone to see the current vote software code   
+vote_view_url        = "https://MyPrecinct.com/votelook1/"  
+  
+Viewing URL for everyone to see the current NGINX setup  
+nginx_view_url        = "https://MyPrecinct.com/votelook2/"  
+  
+List of Unlimited IP - Example, you want walk-ins to vote at your precienct off an ipad or workstation. Example:  
+unlimited_ip_array    = ["192.168.1.2","192.168.1.3","192.168.1.4"]  
 
 
 
