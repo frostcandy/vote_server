@@ -4,7 +4,7 @@
     Author: Frost Candy
     Description:
 
-    * Minor set-up required on first run to set secure key, nonce, and db credentials
+    * Minor set-up required on first run to set db credentials
     You can do it here, or in the config file. For security, after your first run
     after putting in your credentials set your credentials back so to default or
     nothing so nobody can read them later. 

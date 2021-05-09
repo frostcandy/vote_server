@@ -206,10 +206,10 @@ This is for the administrators. After this many seconds you will get a timeout e
 seconds_csrf_user_valid     = 1200  
   
 Viewing URL for everyone to see the current vote software code   
-vote_view_url        = "https://MyPrecinct.com/votelook1/"  
+vote_view_url        = "https://MyPrecinct.com/vote_view/"  
   
 Viewing URL for everyone to see the current NGINX setup  
-nginx_view_url        = "https://MyPrecinct.com/votelook2/"  
+nginx_view_url        = "https://MyPrecinct.com/nginx_view/"  
   
 List of Unlimited IP - Example, you want walk-ins to vote at your precienct off an ipad or workstation. Example:  
 unlimited_ip_array    = ["192.168.1.2","192.168.1.3","192.168.1.4"]  
@@ -219,52 +219,184 @@ unlimited_ip_array    = ["192.168.1.2","192.168.1.3","192.168.1.4"]
 
 
 
-# MY BUILD
-  - Ubuntu 20.04
-  - PHP 8
-  - MySQL 8.4 
-  - Install netstat: sudo apt install net-tools 
-    (This shows us what is listening on port 443 - the secure https default port, should be NGINX)
+# MY Quick and Dirty BUILD
+  - Install Ubuntu ( My Version: 20.04 (LTS)x64 )  
+  - Update Ubuntu  
+    --> sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y && sudo apt clean -y && sudo apt autoclean -y  
+  - Install NGINX ( My Version: 1.18.0 )  
+    --> sudo apt install nginx  
+  - Set your firewall  
+    --> sudo ufw allow OpenSSH  
+    --> sudo ufw allow 'Nginx Full'  
+    --> sudo ufw allow 9008/tcp
+    --> sudo ufw enable
+  - Install MySQL ( My Version: 8.0.23 )  
+    --> sudo apt install mysql-server  
+    --> sudo mysql_secure_installation  
+  - Install net-tools (netstat)  
+    --> sudo apt install net-tools  
+  - Install PHP  ( My Version: 7.4.3 )  
+    --> sudo apt install php-fpm php-mysql  
+  - Install Certbot ( To provide trusted certificate in browsers )  
+    --> sudo apt install certbot python3-certbot-nginx  
+    --> sudo certbot --nginx -d example.com -d www.example.com  
+    --> sudo systemctl status certbot.timer  
 
-
-
-
-
-
-
-NGINX Example
-server{
- location ^~ /vote/ {
-        try_files $uri $uri/ =404;
-        location ~ \.php$ {
-           fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-           include fastcgi_params;
-           fastcgi_param DOCUMENT_URI $request_uri;
-           fastcgi_param SCRIPT_FILENAME $request_filename;
-           fastcgi_param SCRIPT_NAME $fastcgi_script_name;
-        }
-    }
-    # To show everyone the code running the vote software
-    location ^~ /votelook1/ {
-        index notexist.htm;
-        alias /var/www/html/vote/;
-        types { }
-        default_type text/plain;
-        add_header x-robots-tag "noindex, follow";
-        autoindex on;
-        autoindex_exact_size off;
-        autoindex_format html;
-        autoindex_localtime on;
-    }
-    # Assuming you want to show everyone your NGINX setup
-    location ^~ /votelook2/ {
-        index notexist.htm;
-        alias /etc/nginx/;
-        types { }
-        default_type text/plain;
-        autoindex on;
-        autoindex_exact_size off;
-        autoindex_format html;
-        autoindex_localtime on;
-    }
+  - NGINX Setup  
+server {  
+     # This just moves everything to HTTPS or fails if you did not come to the right server.  
+     listen 80;  
+     listen [::]:80;  
+     server_name vote.YOURSITE.com;  
+  
+     if ($host = vote.frostcandy.com) {  
+          return 301 https://$host$request_uri;  
+     }  
+     return 404;  
+}  
+server {  
+     # Here we set up the SSL parts  
+     listen [::]:443 ssl ipv6only=on;  
+     listen 443 ssl;  
+     root /var/www/html;  
+     index index.php;  
+     server_name vote.YOURSITE.com;  
+     ssl_certificate /etc/letsencrypt/live/vote.frostcandy.com/fullchain.pem;  
+     ssl_certificate_key /etc/letsencrypt/live/vote.frostcandy.com/privkey.pem;  
+     include /etc/letsencrypt/options-ssl-nginx.conf;  
+     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;  
+  
+     # In my build I created a landing page with information about the demo.  
+     # You might just put your vote server in your root directory.  
+     location / {  
+          try_files $uri $uri/ =404;  
+     }  
+  
+     # Handle root php files
+     location ~ \.php$ {  
+          include snippets/fastcgi-php.conf;  
+          fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  
+          fastcgi_param DOCUMENT_URI $request_uri;  
+          fastcgi_param SCRIPT_FILENAME $request_filename;  
+          fastcgi_param SCRIPT_NAME $fastcgi_script_name;  
+     }  
+  
+     # I put my vote software in the /vote/ directory  
+     # You might not use this part.  
+     location ^~ /vote/ {  
+          try_files $uri $uri/ =404;  
+  
+          # Handle /vote/ php files  
+          location ~ \.php$ {  
+               fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  
+               include fastcgi_params;  
+               fastcgi_param DOCUMENT_URI $request_uri;  
+               fastcgi_param SCRIPT_FILENAME $request_filename;  
+               fastcgi_param SCRIPT_NAME $fastcgi_script_name;  
+          }  
+     }  
+  
+     # To show everyone the code running the vote software  
+     location ^~ /vote_view/ {  
+          index notexist.htm;  
+          alias /var/www/html/vote/;  
+          types { }  
+          default_type text/plain;  
+          add_header x-robots-tag "noindex, follow";  
+          autoindex on;  
+          autoindex_exact_size off;  
+          autoindex_format html;  
+          autoindex_localtime on;  
+     }  
+  
+     # Assuming you want to show everyone your NGINX setup  
+     # Note you might need to address permissions 
+     location ^~ /nginx_view/ {  
+          index notexist.htm;  
+          alias /etc/nginx/;  
+          types { }  
+          default_type text/plain;  
+          autoindex on;  
+          autoindex_exact_size off;  
+          autoindex_format html;  
+          autoindex_localtime on;  
+     }  
+  
+     # Probably unneccessary since I do not use any apache or .htaccess files    
+     location ~ /\.ht {  
+          deny all;  
+     }  
 }
+
+
+  
+  - Install FrostCandy Vote Server  
+    --> sudo git clone https://github.com/frostcandy/vote_server.git /var/www/html/vote  
+  - Create the vote server database  
+    --> sudo mysql -u USERNAME -p  
+    --> mysql> CREATE DATABASE vote;  
+    --> exit  
+  - Import the SQL data file. 
+    --> mysql -u USERNAME -p vote < /var/www/html/vote/vote.sql  
+
+# Congrats you are almost done, only 1000 steps to go! Let's adjust our config file.  
+  - cd /var/www/html/vote/config  
+  - cp config.ini.tmp config.ini  
+  - nano config.ini  
+  # You do need to set your DB Credentials
+  --> db_user = "YOUR DB USER NAME"  
+  --> db_pass = "YOUR DB PASSWORD"  
+  --> db_host = "localhost"  
+  --> db_name = "vote"  
+
+  # (optional) You could set the locations if you want people to see the code and nginx setup
+  --> vote_view_url  = "THE LOCATION NAME YOU USED IN NGINX (vote_view)"  
+  --> nginx_view_url = "THE LOCATION NAME YOU USED IN NGINX (nginx_view)"  
+
+  # (optional) If you have an iPad or computer set up for walk-in votes, you should set the IP for unlimited use.
+  # Local networked computers would be something like 192.168.1.XXX, you can also assign a WAN IP if you connect remotely
+  # Keep in mind routers will often just return local IP if you are on the same internal network.
+  # Put the IP list in string format, Ex: ["192.168.1.10","172.68.188.83"] 
+  --> unlimited_ip_array = []  
+
+  # The rest of the configuration file should be fine at defaults.  
+  # Save the file CNTRL-O  
+  # Exit the file CNTRL-X  
+
+  - Go to your working vote server site. https://vote.MySite.com  
+  # You should see this message:   
+  # Security file created, move file to /vote/sec.inf  
+  # Create the secure vote directory  
+  - sudo mkdir /vote   
+  - sudo mv /tmp/sec.inf /vote/sec.inf  
+  - sudo chown www-data:root /vote  
+  - sudo chown www-data:root /vote/sec.inf  
+  - sudo chmod 740 /vote  
+  - sudo chmod 640 /vote/sec.inf  
+  
+  # Now our secure credentials are saved, we have to remove them from the plaintext config file.  
+  - sudo nano /var/www/html/vote/config/config.ini  
+  # Set these back to empty
+  --> db_user = ""  
+  --> db_pass = ""  
+  --> db_host = ""  
+  --> db_name = ""  
+  # Save the file CNTRL-O  
+  # Exit the file CNTRL-X  
+
+  - You are done, go back to https://vote.MySite.com and set up the ballot meta data and users.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
