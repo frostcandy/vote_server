@@ -16,9 +16,9 @@ CONTEXT:
   - ADMINISTRATOR       : this person sets up the vote meta data like ballot options and descriptions.
 
 LINKS:
-  - VOTE SERVER CODE        : [voteserver_link]
-  - MODERATOR SERVER CODE   : [moderatorserver_link]
-  - DEMO                    : https://vote.FrostCandy.com 
+  - VOTE SERVER CODE        : [ https://github.com/frostcandy/vote_server ]
+  - MODERATOR SERVER CODE   : [ https://github.com/frostcandy/vote_moderator_server ]
+  - DEMO                    : [ https://vote.FrostCandy.com ]
   - VOTE SERVER Video       : [youtube video instruction]
   - MODERATOR SERVER Video  : [youtube video instruction]
 
@@ -183,6 +183,9 @@ vote
 
 
 # CONFIG SETUP
+-- copy the file config/config.ini.tmp to config/config.ini
+-- The software will use the config.ini file for configuration.
+
 debugmode = 1     : default 0, you don't need to change this
 
 The database credentials can be removed after your first deployment
