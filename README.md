@@ -363,8 +363,8 @@ server {
   --> db_name = "vote"  
 
   # (optional) You could set the locations if you want people to see the code and nginx setup
-  --> vote_view_url  = "THE LOCATION NAME YOU USED IN NGINX (vote_view)"  
-  --> nginx_view_url = "THE LOCATION NAME YOU USED IN NGINX (nginx_view)"  
+  --> vote_view_url  = "THE FULL LOCATION NAME YOU USED IN NGINX (vote_view)"  
+  --> nginx_view_url = "THE FULL LOCATION NAME YOU USED IN NGINX (nginx_view)"  
 
   # (optional) If you have an iPad or computer set up for walk-in votes, you should set the IP for unlimited use.
   # Local networked computers would be something like 192.168.1.XXX, you can also assign a WAN IP if you connect remotely
