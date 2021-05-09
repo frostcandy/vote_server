@@ -705,9 +705,7 @@ function loadContent_welcome(){
   $('#content_box').html(
     '<div id="content_center" class="div_spacer_10">'+
       '<div class="center"><h1>VOTE</h1><div style="font-size:13px">( <span class="frost">FROST</span> <span class="candy">CANDY</span> )</div></div>'+
-      '<div>This voting software was developed as a first draft to create a secure on-line vote that will enfranchise more people while maintianing a high level of trust.</div>'+
-      '<div>This is some more words to get you started.</div>'+
-      '<div>Watch this how to video.</div>'+
+      '<div>This voting software was developed to enfranchise more people while maintianing a high level of trust with verification.</div>'+
     '</div>'
   );
   goTop();
