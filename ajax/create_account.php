@@ -58,7 +58,7 @@
                     `v_uid`              = 0,                 # Admin ballot creator uid
                     `v_start_time_utc`   = 0,                 # Vote start time
                     `v_stop_time_utc`    = 0,                 # Vote stop time
-                    `v_ballot`           = "",                # Ballot Title/Summary/Options 
+                    `v_ballot`           = "{}",              # Ballot Title/Summary/Options 
                     `v_vu_count`         = 0,                 # Total number of vote participants
                     `v_vu_totals`        = 0,                 # Total of each voter option
                     `v_receipt_urls`     = "",                # List of URLS to send receipts to (Poll Watchers)
