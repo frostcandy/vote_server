@@ -246,7 +246,7 @@ unlimited_ip_array    = ["192.168.1.2","192.168.1.3","192.168.1.4"]
 
   - NGINX Setup  
 server {  
-     # This just moves everything to HTTPS or fails if you did not come to the right server.  
+     #This just moves everything to HTTPS or fails if you did not come to the right server.  
      listen 80;  
      listen [::]:80;  
      server_name vote.YOURSITE.com;  
@@ -257,7 +257,7 @@ server {
      return 404;  
 }  
 server {  
-     # Here we set up the SSL parts  
+     #Here we set up the SSL parts  
      listen [::]:443 ssl ipv6only=on;  
      listen 443 ssl;  
      root /var/www/html;  
@@ -268,13 +268,13 @@ server {
      include /etc/letsencrypt/options-ssl-nginx.conf;  
      ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;  
   
-     # In my build I created a landing page with information about the demo.  
-     # You might just put your vote server in your root directory.  
+     #In my build I created a landing page with information about the demo.  
+     #You might just put your vote server in your root directory.  
      location / {  
           try_files $uri $uri/ =404;  
      }  
   
-     # Handle root php files
+     #Handle root php files
      location ~ \.php$ {  
           include snippets/fastcgi-php.conf;  
           fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  
@@ -283,12 +283,12 @@ server {
           fastcgi_param SCRIPT_NAME $fastcgi_script_name;  
      }  
   
-     # I put my vote software in the /vote/ directory  
-     # You might not use this part.  
+     #I put my vote software in the /vote/ directory  
+     #You might not use this part.  
      location ^~ /vote/ {  
           try_files $uri $uri/ =404;  
   
-          # Handle /vote/ php files  
+          #Handle /vote/ php files  
           location ~ \.php$ {  
                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  
                include fastcgi_params;  
@@ -298,7 +298,7 @@ server {
           }  
      }  
   
-     # To show everyone the code running the vote software  
+     #To show everyone the code running the vote software  
      location ^~ /vote_view/ {  
           index notexist.htm;  
           alias /var/www/html/vote/;  
@@ -311,8 +311,8 @@ server {
           autoindex_localtime on;  
      }  
   
-     # Assuming you want to show everyone your NGINX setup  
-     # Note you might need to address permissions 
+     #Assuming you want to show everyone your NGINX setup  
+     #Note you might need to address permissions 
      location ^~ /nginx_view/ {  
           index notexist.htm;  
           alias /etc/nginx/;  
@@ -324,7 +324,7 @@ server {
           autoindex_localtime on;  
      }  
   
-     # Probably unneccessary since I do not use any apache or .htaccess files    
+     #Probably unneccessary since I do not use any apache or .htaccess files    
      location ~ /\.ht {  
           deny all;  
      }  
@@ -337,15 +337,15 @@ server {
   - Create the vote server database  
     --> sudo mysql -u USERNAME -p  
     --> mysql> CREATE DATABASE vote;  
-    # Create a user that is not root with a strong password.
+    #Create a user that is not root with a strong password.
     --> mysql> CREATE USER 'frost'@'localhost' IDENTIFIED BY 'password';
     --> mysql> GRANT ALL PRIVILEGES ON *.* TO 'frost'@'localhost';
     --> mysql> FLUSH PRIVILEGES;
     --> exit;
-    # Want to remove the root access? Why not. 
+    #Want to remove the root access? Why not. 
     --> mysql -u frost -p  
     --> mysql> SELECT host, user, plugin FROM mysql.user;  
-    # root should show someting like auth_socket for it's plugin  
+    #root should show someting like auth_socket for it's plugin  
     --> mysql> UPDATE mysql.user SET plugin = '' WHERE user = 'root' AND host = 'localhost';  
     --> mysql> FLUSH PRIVILEGES;  
     --> exit;  
@@ -356,30 +356,30 @@ server {
   - cd /var/www/html/vote/config  
   - cp config.ini.tmp config.ini  
   - nano config.ini  
-  # You do need to set your DB Credentials
+  #You do need to set your DB Credentials
   --> db_user = "YOUR DB USER NAME (frost)"  
   --> db_pass = "YOUR DB PASSWORD (password)"  
   --> db_host = "localhost"  
   --> db_name = "vote"  
 
-  # (optional) You could set the locations if you want people to see the code and nginx setup
+  #(optional) You could set the locations if you want people to see the code and nginx setup
   --> vote_view_url  = "THE FULL LOCATION NAME YOU USED IN NGINX (vote_view/)"  
   --> nginx_view_url = "THE FULL LOCATION NAME YOU USED IN NGINX (nginx_view/)"  
 
-  # (optional) If you have an iPad or computer set up for walk-in votes, you should set the IP for unlimited use.
-  # Local networked computers would be something like 192.168.1.XXX, you can also assign a WAN IP if you connect remotely
-  # Keep in mind routers will often just return local IP if you are on the same internal network.
-  # Put the IP list in string format, Ex: ["192.168.1.10","172.68.188.83"] 
+  #(optional) If you have an iPad or computer set up for walk-in votes, you should set the IP for unlimited use.
+  #Local networked computers would be something like 192.168.1.XXX, you can also assign a WAN IP if you connect remotely
+  #Keep in mind routers will often just return local IP if you are on the same internal network.
+  #Put the IP list in string format, Ex: ["192.168.1.10","172.68.188.83"] 
   --> unlimited_ip_array = []  
 
-  # The rest of the configuration file should be fine at defaults.  
-  # Save the file CNTRL-O  
-  # Exit the file CNTRL-X  
+  #The rest of the configuration file should be fine at defaults.  
+  #Save the file CNTRL-O  
+  #Exit the file CNTRL-X  
 
   - Go to your working vote server site. https://vote.MySite.com  
-  # You should see this message:   
-  # Security file created, move file to /vote/sec.inf  
-  # Create the secure vote directory  
+  #You should see this message:   
+  #Security file created, move file to /vote/sec.inf  
+  #Create the secure vote directory  
   - sudo mkdir /vote   
   - sudo mv /tmp/sec.inf /vote/sec.inf  
   - sudo chown www-data:root /vote  
@@ -387,20 +387,20 @@ server {
   - sudo chmod 740 /vote  
   - sudo chmod 640 /vote/sec.inf  
   
-  # Now our secure credentials are saved, we have to remove them from the plaintext config file.  
+  #Now our secure credentials are saved, we have to remove them from the plaintext config file.  
   - sudo nano /var/www/html/vote/config/config.ini  
-  # Set these back to empty
+  #Set these back to empty
   --> db_user = ""  
   --> db_pass = ""  
   --> db_host = ""  
   --> db_name = ""  
-  # Save the file CNTRL-O  
-  # Exit the file CNTRL-X  
+  #Save the file CNTRL-O  
+  #Exit the file CNTRL-X  
 
   - You are done, go back to https://vote.MySite.com and set up the ballot meta data and users
-  # If you get an error connecting to your database and need to reset your credentials
-  # sudo rm /vote/sec.inf 
-  # Once that file is removed, reset your config db credentials, and repeat the process for building that file. 
+  #If you get an error connecting to your database and need to reset your credentials
+  #sudo rm /vote/sec.inf 
+  #Once that file is removed, reset your config db credentials, and repeat the process for building that file. 
 
 
 
