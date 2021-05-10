@@ -114,6 +114,7 @@ class tools{
     	return $nonce . sodium_crypto_secretbox($msg, $nonce, $this->sec_key);
     }
     public function iDecrypt($msg){
+    	if(strlen($msg) <= SODIUM_CRYPTO_SECRETBOX_NONCEBYTES){ return ''; }
     	$nonce = mb_substr($msg, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
     	$m1    = mb_substr($msg, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
     	return sodium_crypto_secretbox_open($m1, $nonce, $this->sec_key);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 09, 2021 at 06:20 PM
+-- Generation Time: May 10, 2021 at 01:26 AM
 -- Server version: 8.0.23-0ubuntu0.20.04.1
 -- PHP Version: 7.4.3
 
@@ -39,7 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`allow_login`, `test_mode`, `vote_complete`, `vote_close_uid`) VALUES
-(1, 1, 0, NULL);
+(1, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -53,8 +53,8 @@ CREATE TABLE `users` (
   `l` int UNSIGNED NOT NULL,
   `status` int NOT NULL,
   `password` char(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fname` varbinary(60) NOT NULL,
-  `lname` varbinary(60) NOT NULL,
+  `fname` varbinary(255) NOT NULL,
+  `lname` varbinary(255) NOT NULL,
   `email` varbinary(255) NOT NULL,
   `parent` bigint NOT NULL DEFAULT '0',
   `user_last_ip` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `users` (
   `seckey` varbinary(255) DEFAULT NULL,
   `apikey` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `watchurl` varbinary(255) DEFAULT NULL,
-  `party` varbinary(100) DEFAULT NULL
+  `party` varbinary(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
