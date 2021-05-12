@@ -33,26 +33,31 @@
     if( $csrf != '' && $e =='' && $f=='' ){
         // Just do a little database clean up on login. 
         $tool->dbclean();
-        // Verify the User
-        $rq = $tool->q('SELECT * FROM `users` WHERE `email`= ? LIMIT 1;', [$tool->iEncrypt($email)], 's', 1);
-        if($rq->num_rows > 0){
-            $r = $rq->fetch_object();
-            if( password_verify($password, $r->password ) ){
-                $n = 'logged_in';
-                $csrf=$tool->updateCSRF($csrf, $r->ukey); 
-                $tool->user = [ $r->status, $tool->iDecrypt($r->fname), $tool->iDecrypt($r->lname), $tool->iDecrypt($r->email)];
 
-                if($op==2){
-                    // End the test vote
-                    if( $tool->admin['test_mode'] === 1 ){
-                        $tool->q('UPDATE `admin` SET `allow_login` = 1, `vote_complete` = 0, `vote_close_uid` = null;', [], ''); 
-                    } else { 
-                        $csrf=''; $e = 'live_vote_cant_be_removed'; 
+        // As some point this might be better as a username that is not encrypted for speed if we ever plan on more than say 100 users. 
+        $e = 'login_not_found';
+        $rq = $tool->q( 'SELECT * FROM `users`' );
+        if( $rq->num_rows > 0 ){
+            while ( $r = $rq->fetch_object() ) {
+                if( $email == $tool->iDecrypt($r->email) && password_verify($password, $r->password) ){
+                    $e = '';
+                    $n = 'logged_in';
+                    $csrf=$tool->updateCSRF($csrf, $r->ukey); 
+                    $tool->user = [ $r->status, $tool->iDecrypt($r->fname), $tool->iDecrypt($r->lname), $tool->iDecrypt($r->email)];
+
+                    if($op==2){
+                        // End the test vote
+                        if( $tool->admin['test_mode'] === 1 ){
+                            $tool->q('UPDATE `admin` SET `allow_login` = 1, `vote_complete` = 0, `vote_close_uid` = null;', [], ''); 
+                        } else { 
+                            $csrf=''; $e = 'live_vote_cant_be_removed'; 
+                        }
                     }
+                    break;
                 }
+            } // End While
+        } // End if 0 rows
 
-            }else{ $e = 'login_not_found'; }
-        }else{ $e = 'login_not_found'; }
     }
     echo '{"csrf":"'.$csrf.'","e":"'.$e.'","n":"'.$n.'","f":"'.$f.'","u":'.json_encode($tool->user).'}';
 ?>
