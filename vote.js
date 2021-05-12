@@ -771,7 +771,7 @@ function loadContent_logged_in(){
     o += '<div class="overhide">Get your secret access key so you can access<br> the system during an active voting session. <div id="aop_vote_verify" class="btn noselect floatright">Access Key</div>  </div>';
   }
   if(user[0] >= 1100){ // I am allowed to moderate / verify voters for my faction.
-    o += '<div class="overhide">Get your secret access key so you can access<br> the system during an active voting session. <div id="aop_vote_verify" class="btn noselect floatright">Access Key</div>  </div>';
+    o += '';
   }
   if(user[0] >= 1110){ // I am allowed to allow new users access.
     o += '<div class="overhide">This button will let you allow more administrative assistants.<br> <span class="ex">Ex: ( Poll Watchers / Vote Validators )</span> <div id="aop_allow_users" class="btn noselect floatright">Users</div>  </div>';
