@@ -767,7 +767,10 @@ function loadContent_logged_in(){
 //  if(user[0] >= 1000){ // I am allowed to monitor voter results.
 //    o += '<div class="overhide">Use this button to enter the URL you want vote results sent to. <br><span class="ex">Ex: 192.168.1.20</span>  <div id="aop_set_result_url" class="btn noselect floatright">Result URL</div>  </div>';
 //  }
-  if(user[0] >= 1100){ // I am allowed to verify voters for my faction.
+  if(user[0] >= 1000){ // I am allowed to watch voters for my faction.
+    o += '<div class="overhide">Get your secret access key so you can access<br> the system during an active voting session. <div id="aop_vote_verify" class="btn noselect floatright">Access Key</div>  </div>';
+  }
+  if(user[0] >= 1100){ // I am allowed to moderate / verify voters for my faction.
     o += '<div class="overhide">Get your secret access key so you can access<br> the system during an active voting session. <div id="aop_vote_verify" class="btn noselect floatright">Access Key</div>  </div>';
   }
   if(user[0] >= 1110){ // I am allowed to allow new users access.
