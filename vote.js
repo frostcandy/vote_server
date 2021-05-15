@@ -1035,11 +1035,9 @@ function loadContent_run_vote(){
 	      '<div><br><br><div id="vote_section_action_1n" class="btn noselect floatright">Continue</div></div>'+
         '<div id="fc_vote_info">'+
             '<div>Additional Information:</div>'+
-            '<div><a target="_blank" href="https://youtu.be/J_uzNzwFuig">How to Vote Video</a></div>'+
-            '<div><a target="_blank" href="https://youtu.be/J_uzNzwFuig">FrostCandy Vote Admin Video</a></div>'+
-            '<div><a target="_blank" href="https://github.com/frostcandy/vote_server">Vote Server Software</a></div>'+
-            '<div><a target="_blank" href="https://github.com/frostcandy/vote_moderator_server">Moderator Server Software</a></div>'+
-            '<div><a target="_blank" href="https://vote.frostcandy.com/">Demo / Donate</a></div>'+
+            '<div><a style="color:#1F85DE;" target="_blank" href="https://github.com/frostcandy/vote_server">Vote Server Software</a></div>'+
+            '<div><a style="color:#1F85DE;" target="_blank" href="https://github.com/frostcandy/vote_moderator_server">Moderator Server Software</a></div>'+
+            '<div><a style="color:#1F85DE;" target="_blank" href="https://vote.frostcandy.com/">Demo / Donate</a></div>'+
         '</div>'+
 			'</div>'+
 			'<div id="vote_section_2" class="vote_sections">'+
