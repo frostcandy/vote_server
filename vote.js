@@ -152,7 +152,7 @@ style.innerHTML = '' +
   '.form_soft_css textarea{padding: 12px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 90%; height: 100px; }'+
   '.form_bittxtarea_css textarea{ width: 98%; min-width: 350px; height: 150px; padding:10px; }'+
 
-  '#fc_vote_info{}'+
+  '#fc_vote_info{ margin-top: 50px; border-top: 4px solid #777; padding-top: 10px; }'+
   '#fc_vote_info>div{ margin: 10px 0px; }'+
 
 
@@ -1034,13 +1034,12 @@ function loadContent_run_vote(){
 				usepic+
 	      '<div><br><br><div id="vote_section_action_1n" class="btn noselect floatright">Continue</div></div>'+
         '<div id="fc_vote_info">'+
-            '<div>More info, URLs open in a new tab:</div>'+
+            '<div>Additional Information:</div>'+
             '<div><a target="_blank" href="https://youtu.be/J_uzNzwFuig">How to Vote Video</a></div>'+
             '<div><a target="_blank" href="https://youtu.be/J_uzNzwFuig">FrostCandy Vote Admin Video</a></div>'+
-            '<div><a target="_blank" href="">Vote Server Software</a></div>'+
-            '<div><a target="_blank" href="">Admin Server Software</a></div>'+
-            '<div>Password Generator: <a target="_blank" href="https://passbank.frostcandy.com/">PassBank</a></div>'+
-            '<div>Support Freedom: <a target="_blank" href="">Donate</a></div>'+
+            '<div><a target="_blank" href="https://github.com/frostcandy/vote_server">Vote Server Software</a></div>'+
+            '<div><a target="_blank" href="https://github.com/frostcandy/vote_moderator_server">Moderator Server Software</a></div>'+
+            '<div><a target="_blank" href="https://vote.frostcandy.com/">Demo / Donate</a></div>'+
         '</div>'+
 			'</div>'+
 			'<div id="vote_section_2" class="vote_sections">'+
