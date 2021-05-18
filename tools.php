@@ -56,6 +56,8 @@ class tools{
         $this->config["db_host"] = '';
         $this->config["db_name"] = '';
 
+        if(!is_array($this->config['unlimited_ip_array'])){ $this->config['unlimited_ip_array'] = []; }
+
         $this->seconds_csrf_non_user_valid = ($this->config["seconds_csrf_non_user_valid"] !="") ? $this->config["seconds_csrf_non_user_valid"] : $this->seconds_csrf_non_user_valid;
         $this->seconds_csrf_user_valid     = ($this->config["seconds_csrf_user_valid"]     !="") ? $this->config["seconds_csrf_user_valid"]     : $this->seconds_csrf_user_valid;
         $this->config["seconds_csrf_non_user_valid"] = '';

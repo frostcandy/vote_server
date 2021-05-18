@@ -163,7 +163,11 @@
         $vua_a = json_decode($rip->vua_approve);
         $vua_a[] = [strval($tool->uid), $tool->user[2] . ', ' . $tool->user[1], $tool->user[4], "approved", ""];
         // If my party already accepted we can ignore my request
-        if (strpos($rip->vua_approve, $tool->user[4]) !== false) { echo '{"e":"Your party already approved this voter."}'; return; }
+        if (strpos($rip->vua_approve, $tool->user[4]) !== false) {
+ 	        $oo->d = 'Your party already approved this voter.';
+            echo '{"e":"","ev":"","o":"'. $tool->iEncryptReceipt( json_encode($oo), $seckey) .'"}';
+	        return; 
+    	}
         // Approve the vote if all parties agree, or update the number of parties who have approved it.
         $rq2  = $tool->q('SELECT `party` FROM `users` WHERE `status` >= 1100 GROUP BY `party`', [ ], '' );
         $count_parties = $rq2->num_rows;
