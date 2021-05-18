@@ -19,6 +19,10 @@ Version: 0.9 - While this software has been tested to be working properly it sho
   - VOTE SERVER CODE        : [ https://github.com/frostcandy/vote_server ]
   - MODERATOR SERVER CODE   : [ https://github.com/frostcandy/vote_moderator_server ]
   - DEMO                    : [ https://vote.FrostCandy.com ]
+  - Overview Video          : [ https://youtu.be/t7JgCVaiXPA ] 
+  ---- The overview is not great, i'm not trying to sell anything just explain.
+  ---- If you have questions contact me so I know what sorts of things to elaborate
+  ---- on in future videos. 
   - VOTE SERVER Video       : [youtube video instruction]
   - MODERATOR SERVER Video  : [youtube video instruction]
 
