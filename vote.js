@@ -267,6 +267,9 @@ function nl2br(s){if(typeof s === 'undefined' || s === null){return '';} return 
 function cleaner(s){  return (s).replace(/[^a-zA-Z ]/g, ""); }
 window.onbeforeunload = function(){goTop(); return null;};
 
+// Even though only the administrators write to the vote page we should still do some sanaty checks to remove scripts from injected html.
+function stripScripts(s) {var div = document.createElement('div'); div.innerHTML = s; var scripts = div.getElementsByTagName('script'); var i = scripts.length; while (i--) { scripts[i].parentNode.removeChild(scripts[i]); } return div.innerHTML;}
+
 
 //-------------------------------------------------------------------------
 // Hard Coded click functions 
@@ -393,7 +396,7 @@ class $${
               break;
   		    case 'html':
               this.unclick();this.unchange();
-  				    this.eleObj[i].innerHTML = meta1;
+  				    this.eleObj[i].innerHTML = stripScripts(meta1);
               // Rebuild all clickable actions for newly created HTML
               for( var ii=0;ii<$ja.length;ii++ ){ var tempObj = new $$($ja[ii][0]).click($ja[ii][1]); }
               for( var ii=0;ii<$ja2.length;ii++ ){ var tempObj = new $$($ja2[ii][0]).change($ja2[ii][1]); }
